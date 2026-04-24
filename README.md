@@ -4,7 +4,7 @@ A clean, interactive profile selection interface that lets users manage multiple
 
 **✨ Features**
 
-Profile Cards — Display each Chrome profile with avatar, name, badge, and sync status
+**Profile Cards** — Display each Chrome profile with avatar, name, badge, and sync status
 
 **Edit Name & Picture** — Click the pencil icon to edit profile name or overlay to change avatar
 
@@ -16,7 +16,7 @@ Profile Cards — Display each Chrome profile with avatar, name, badge, and sync
 
 **Show on Startup** — Checkbox preference with informative tooltip
 
-**Responsive Layout **— Cards adjust gracefully across devices
+**Responsive Layout**— Cards adjust gracefully across devices
 
 **🛠️ Technologies**
 
