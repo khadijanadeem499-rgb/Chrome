@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khadija - New Tab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-size: 81.25%;
+            }
+
+        button {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: #202124;
+            padding: 0;
+            justify-content: flex-start;
+        }
+
+        .top-nav {
+            align-self: flex-end;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 13px;
+            position: relative;
+        }
+
+        .top-nav a {
+            text-decoration: none;
+            color: #3c4043;
+            transition: color 0.2s;
+        }
+
+        .top-nav a:hover {
+            color: #1a73e8;
+            text-decoration: underline;
+        }
+
+        .apps-launcher {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+            cursor: pointer;
+            color: #5f6368;
+            font-size: 20px;
+            position: relative;
+        }
+
+        .apps-launcher:hover {
+            background: rgba(60, 64, 67, 0.08);
+        }
+
+        .apps-dropdown {
+            display: none;
+            position: absolute;
+            top: 60px; 
+            right: 70px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            padding: 18px 16px;
+            width: 320px;
+            max-height: 80vh;
+            border: 1px solid #f1f3f4;
+            z-index: 1000;
+            overflow: scroll;
+        }
+
+        .apps-launcher:hover + .apps-dropdown,
+        .apps-dropdown:hover {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .app-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            padding: 12px 8px;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .app-item:hover {
+            background: #f1f3f4;
+            transform: scale(1.05);
+        }
+
+        .app-item img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 8px;
+            border-radius: 50%;
+            object-fit: contain;
+            background: #f1f3f4;
+            padding: 4px;
+        }
+
+        .app-item span {
+            color: #3c4043;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .profile-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #1a73e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: all 0.2s;
+            border: 1px solid #dadce0;
+        }
+
+        .profile-icon:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transform: scale(1.1);
+        }
+
+        .profile-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .main-logo {
+            margin-top: 60px;
+            animation: slideDown 0.8s ease;
+        }
+
+        .main-logo img {
+            width: 272px;
+            height: 92px;
+            object-fit: contain;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-wrapper {
+            position: relative;
+            margin-top: 32px;
+            width: 640px;
+            max-width: 90vw;
+            animation: fadeIn 1s ease 0.3s both;
+        }
+
+        .search-bar {
+            width: 100%;
+            height: 52px;
+            border-radius: 28px;
+            border: 1px solid #dfe1e5;
+            padding: 0 160px 0 52px;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .search-bar:hover {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-color: #bdc1c6;
+        }
+
+        .search-bar:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 2px 12px rgba(26,115,232,0.15);
+            transform: scale(1.02);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9aa0a6;
+            font-size: 18px;
+        }
+
+        .search-controls {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            color: #5f6368;
+            font-size: 18px;
+            position: relative;
+        }
+
+        .icon-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+            transform: scale(1.1);
+            color: #1a73e8;
+        }
+
+        .icon-btn:hover::after {
+            content: attr(title);
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #323232;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+       @property --angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+
+        @keyframes rotateGradient {
+            from { --angle: 0deg; }
+            to { --angle: 360deg; }
+        }
+
+        .ai-mode-btn {
+            /* background-color: #202124; */
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            border: 2px solid transparent;
+            border-radius: 20px;
+            cursor: pointer;
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            animation: rotateGradient 3s linear infinite;
+            transition: background-color 0.3s ease;
+            background-color:  #d2e3fc;
+        }
+
+        .ai-mode-btn:hover {
+            background-image: 
+                linear-gradient(white, white), 
+                conic-gradient(from var(--angle), #4285f4, #34a853, #fbbc05, #ea4335, #4285f4);
+        }
+
+        .ai-mode-btn a {
+            color: black;
+            text-decoration: none;
+            font-family: calibri;
+            font-size: 16px;
+        }
+
+        @keyframes rotate-gradient {
+            to {
+                background-image: 
+                linear-gradient(white, white), 
+                conic-gradient(from 360deg, #4285f4, #34a853, #fbbc05, #ea4335, #4285f4);
+            }
+            }
+
+        .shortcuts {
+            margin-top: 48px;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 16px 8px;
+            max-width: 1000px;
+            padding: 0 16px;
+            animation: fadeIn 1s ease 0.6s both;
+        }
+
+        .shortcut-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-radius: 12px;
+            padding: 8px 4px;
+        }
+
+        .shortcut-item:nth-child(1) { animation-delay: 0.1s; }
+        .shortcut-item:nth-child(2) { animation-delay: 0.15s; }
+        .shortcut-item:nth-child(3) { animation-delay: 0.2s; }
+        .shortcut-item:nth-child(4) { animation-delay: 0.25s; }
+        .shortcut-item:nth-child(5) { animation-delay: 0.3s; }
+        .shortcut-item:nth-child(6) { animation-delay: 0.35s; }
+        .shortcut-item:nth-child(7) { animation-delay: 0.4s; }
+        .shortcut-item:nth-child(8) { animation-delay: 0.45s; }
+        .shortcut-item:nth-child(9) { animation-delay: 0.5s; }
+        .shortcut-item:nth-child(10) { animation-delay: 0.55s; }
+
+        .shortcut-item:hover {
+            background-color: #f1f3f4;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .icon-circle {
+            width: 52px;
+            height: 52px;
+            background: #f1f3f4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .shortcut-item:hover .icon-circle {
+            background: #e3e5e6;
+            transform: rotate(360deg);
+        }
+
+        .icon-circle img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .shortcut-name {
+            font-size: 12px;
+            font-weight: 500;
+            color: #3c4043;
+            text-align: center;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .customize-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 10px 15px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+            border: none;
+            text-decoration: none;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .customize-btn:hover {
+            background: #d2e3fc;
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            animation: none;
+        }
+
+        .customize-btn:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 800px) {
+            .shortcuts {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .shortcuts {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .main-logo img {
+                width: 200px;
+                height: auto;
+            }
+            .top-nav {
+                padding: 12px;
+            }
+        }
+    </style>
+<body>
+    <div class="top-nav">
+        <a href="https://mail.google.com" target="_blank">Gmail</a>
+        <a href="https://images.google.com" target="_blank">Images</a>
+        <div class="apps-launcher" title="Google products">
+            <i class="fas fa-th"></i>
+        </div>
+    <div class="apps-dropdown" id="appsDropdown">
+        <div class="apps-grid">
+        <!-- Row 1: Account, Drive, Gmail -->
+        <a class="app-item" href="https://myaccount.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/chrome_48dp.png" alt="Account">
+            <span>Account</span>
+        </a>
+        <a class="app-item" href="https://drive.google.com" target="_blank">
+            <img src="https://ssl.gstatic.com/images/branding/product/1x/drive_48dp.png" alt="Drive">
+            <span>Drive</span>
+        </a>
+        <a class="app-item" href="https://mail.google.com" target="_blank">
+            <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" alt="Gmail">
+            <span>Gmail</span>
+        </a>
+        
+        <!-- Row 2: YouTube, Gemini, Maps -->
+        <a class="app-item" href="https://youtube.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/youtube_48dp.png" alt="YouTube">
+            <span>YouTube</span>
+        </a>
+        <a class="app-item" href="https://gemini.google.com" target="_blank">
+            <img src="../images/gemini" alt="Gemini">
+            <span>Gemini</span>
+        </a>
+        <a class="app-item" href="https://maps.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/maps_48dp.png" alt="Maps">
+            <span>Maps</span>
+        </a>
+        
+        <!-- Row 3: Search, Calendar, News -->
+        <a class="app-item" href="https://contacts.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/contacts_48dp.png" alt="Contacts">
+            <span>Contacts</span>
+        </a>
+        <a class="app-item" href="https://calendar.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/calendar_48dp.png" alt="Calendar">
+            <span>Calendar</span>
+        </a>
+        <a class="app-item" href="https://news.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/news_48dp.png" alt="News">
+            <span>News</span>
+        </a>
+        
+        <!-- Row 4: Photos, Meet, Translate -->
+        <a class="app-item" href="https://photos.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/photos_48dp.png" alt="Photos">
+            <span>Photos</span>
+        </a>
+        <a class="app-item" href="https://meet.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/meet_48dp.png" alt="Meet">
+            <span>Meet</span>
+        </a>
+        <a class="app-item" href="https://translate.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/translate_48dp.png" alt="Translate">
+            <span>Translate</span>
+        </a>
+        
+        <!-- Row 5: Earth, Saved, Arts and Culture -->
+        <a class="app-item" href="https://earth.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/earth_48dp.png" alt="Earth">
+            <span>Earth</span>
+        </a>
+        <a class="app-item" href="https://forms.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/forms_48dp.png" alt="Forms">
+            <span>Forms</span>
+        </a>
+        <a class="app-item" href="https://www.blogger.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/blogger_48dp.png" alt="Blogger">
+            <span>Blogger</span>
+        </a>
+        
+        <!-- Row 6: Google Ads, Merchant Center, Contacts -->
+        <a class="app-item" href="https://www.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/google_48dp.png" alt="Search">
+            <span>Search</span>
+        </a>
+        <a class="app-item" href="https://ads.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/google_ads_48dp.png" alt="Google Ads">
+            <span>Google Ads</span>
+        </a>
+        <a class="app-item" href="https://merchants.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/google_48dp.png" alt="Merchant Center">
+            <span>Merchant...</span>
+        </a>
+        
+        <!-- Row 7: Travel, Forms, Books -->
+        <a class="app-item" href="https://travel.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/google_48dp.png" alt="Travel">
+            <span>Travel</span>
+        </a>
+        <a class="app-item" href="https://www.google.com/saved" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/google_48dp.png" alt="Saved">
+            <span>Saved</span>
+        </a>
+        <a class="app-item" href="https://books.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/books_48dp.png" alt="Books">
+            <span>Books</span>
+        </a>
+        
+        <!-- Row 8: Chrome, Password Manager, Google Alerts -->
+        <a class="app-item" href="https://www.google.com/chrome" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/chrome_48dp.png" alt="Chrome">
+            <span>Chrome ...</span>
+        </a>
+        <a class="app-item" href="https://passwords.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/google_48dp.png" alt="Password Manager">
+            <span>Password ...</span>
+        </a>
+        <a class="app-item" href="https://www.google.com/alerts" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/google_48dp.png" alt="Google Alerts">
+            <span>Google A...</span>
+        </a>
+        
+        <!-- Row 9: Blogger, Wallet, NotebookLM -->
+        
+        <a class="app-item" href="https://artsandculture.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/arts_and_culture_48dp.png" alt="Arts and Culture">
+            <span>Arts and...</span>
+        </a>
+        <a class="app-item" href="https://wallet.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/google_wallet_48dp.png" alt="Wallet">
+            <span>Wallet</span>
+        </a>
+        <a class="app-item" href="https://notebooklm.google.com" target="_blank">
+            <img src="https://www.gstatic.com/images/branding/product/1x/google_48dp.png" alt="NotebookLM">
+            <span>Notebook...</span>
+        </a>
+    </div>
+</div>
+        <a href="https://accounts.google.com/SignOutOptions?hl=en&continue=https://www.google.com" target="_blank" class="profile-icon">
+            <img src="../images/icons/image.png" alt="Work Profile" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2216%22%20fill%3D%22%231a73e8%22%2F%3E%3Ctext%20x%3D%2216%22%20y%3D%2222%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20fill%3D%22%23ffffff%22%3EW%3C%2Ftext%3E%3C%2Fsvg%3E'">
+        </a>
+    </div>
+
+    <div class="main-logo">
+        <img src="../images/google_logo.svg" alt="Google" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22272%22%20height%3D%2292%22%20viewBox%3D%220%200%20272%2092%22%3E%3Ctext%20x%3D%2220%22%20y%3D%2270%22%20font-size%3D%2270%22%20fill%3D%22%233c4043%22%3EGoogle%3C%2Ftext%3E%3C%2Fsvg%3E'">
+    </div>
+
+    <div class="search-wrapper">
+        <form action="https://www.google.com/search" method="GET" style="width:100%;">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" name="q" class="search-bar" placeholder="Search Google or type a URL" autocomplete="off">
+        </form>
+
+        <div class="search-controls">
+            <button class="icon-btn" title="Search by voice">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <button class="icon-btn" title="Search by image">
+                <i class="fas fa-camera"></i>
+             </button>
+            <button class="ai-mode-btn" ><a href="https://gemini.google.com"> AI Mode</a>
+            </button> 
+        </div>
+    </div>
+
+    
+<div class="shortcuts">
+        <a class="shortcut-item" href="https://www.youtube.com" target="_blank">
+            <div class="icon-circle">
+                <img src="../images/youtube" alt="YouTube">
+            </div>
+            <span class="shortcut-name">YouTube</span>
+        </a>
+        <a class="shortcut-item" href="https://www.instagram.com" target="_blank">
+            <div class="icon-circle">
+                <img src="../images/instagram" alt="Instagram">
+            </div>
+            <span class="shortcut-name">Instagram</span>
+        </a>
+        <a class="shortcut-item" href="https://www.facebook.com" target="_blank">
+            <div class="icon-circle">
+                <img src="../images/facebook" alt="Facebook">
+            </div>
+            <span class="shortcut-name">Facebook</span>
+        </a>
+        <a class="shortcut-item" href="https://www.tiktok.com" target="_blank">
+            <div class="icon-circle">
+                <img src="https://www.tiktok.com/favicon.ico" alt="TikTok">
+            </div>
+            <span class="shortcut-name">TikTok</span>
+        </a>
+        <a class="shortcut-item" href="https://www.fiverr.com" target="_blank">
+            <div class="icon-circle">
+                <img src="https://www.fiverr.com/favicon.ico" alt="Fiverr">
+            </div>
+            <span class="shortcut-name">Fiverr</span>
+        </a>
+        <a class="shortcut-item" href="https://www.upwork.com" target="_blank">
+            <div class="icon-circle">
+                <img src="https://www.upwork.com/favicon.ico" alt="Upwork">
+            </div>
+            <span class="shortcut-name">Upwork</span>
+        </a>
+        <a class="shortcut-item" href="https://www.linkedin.com" target="_blank">
+            <div class="icon-circle">
+                <img src="https://static.licdn.com/sc/h/akt4ae504epesldzj74dzred8" alt="LinkedIn">
+            </div>
+            <span class="shortcut-name">LinkedIn</span>
+        </a>
+        <a class="shortcut-item" href="https://www.github.com" target="_blank">
+            <div class="icon-circle">
+                <img src="https://github.com/favicon.ico" alt="GitHub">
+            </div>
+            <span class="shortcut-name">GitHub</span>
+        </a>
+        <a class="shortcut-item" href="https://web.whatsapp.com" target="_blank">
+            <div class="icon-circle">
+                <img src="../images/whatsapp" alt="WhatsApp">
+            </div>
+            <span class="shortcut-name">WhatsApp</span>
+        </a>
+        <a class="shortcut-item" href="https://chatgpt.com" target="_blank">
+            <div class="icon-circle">
+                <img src="https://cdn.oaistatic.com/_next/static/media/favicon-32x32.630a2b99.png" alt="ChatGPT">
+            </div>
+            <span class="shortcut-name">ChatGPT</span>
+        </a>
+    </div>
+
+    <a href="https://www.google.com" class="customize-btn">
+        <i class="fas fa-pencil-alt"></i> Customize Chrome
+    </a>
+
+</body>
+</html>
+
