@@ -20,13 +20,13 @@ A clean, interactive profile selection interface that lets users manage multiple
 
 **🛠️ Technologies**
 
-HTML5
-
-CSS3 (External: css/style.css)
-
-JavaScript (included via external file)
-
-Font Awesome Icons
-
-Custom avatar images
+- HTML5
+  
+- CSS3 (External: css/style.css)
+  
+- JavaScript (included via external file)
+  
+- Font Awesome Icons
+  
+- Custom avatar images
 
